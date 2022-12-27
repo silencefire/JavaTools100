@@ -2,10 +2,10 @@ package jdk.tools;
 
 import java.util.Objects;
 
-public class JdkDemo {
+public class JdkDemoObjects {
     public static void main(String[] args) {
-        JdkDemo demo = new JdkDemo();
-        demo.ti2();
+        JdkDemoObjects demo = new JdkDemoObjects();
+        demo.ti3();
     }
     /**
      * @description: Objects的常用方法--equals
@@ -16,9 +16,9 @@ public class JdkDemo {
      * @time: 2022/12/26
      */
     private void ti1(){
-        JdkDemo demo1 = new JdkDemo();
-        JdkDemo demo2 = new JdkDemo();
-        JdkDemo demo3 = null;
+        JdkDemoObjects demo1 = new JdkDemoObjects();
+        JdkDemoObjects demo2 = new JdkDemoObjects();
+        JdkDemoObjects demo3 = null;
         //常规方法，下面会报错
         System.out.println("常规equals方法：res="+demo3.equals(demo1));
         //下面不会报错
@@ -46,10 +46,19 @@ public class JdkDemo {
 
     /**
      * @description: Objects的hash方法与hashCode方法辨析
+     * 看源码可以知道Objects.hashCode与Object的hashCode没有本质区别
+     * 而Objects的hash方法主要方便计算一组数据的hashcode值
      * @author: zhenghm
      * @time: 2022/12/26
      */
     private void ti3(){
+        System.out.println("a".hashCode());
+        System.out.println(Objects.hashCode("a"));
+        System.out.println(Objects.hash("a"));//31+96 = 128
+        System.out.println(Objects.hash("a","a"));//128*31+96=4065
+    }
+
+    private void ti4(){
 
     }
 }
