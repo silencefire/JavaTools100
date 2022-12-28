@@ -2,14 +2,13 @@ package jdk.tools;
 
 import jdk.tools.entity.Apple;
 
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-public class JdkDemoObjects {
+public class JdkObjects {
     public static void main(String[] args) {
-        JdkDemoObjects demo = new JdkDemoObjects();
+        JdkObjects demo = new JdkObjects();
         demo.ti7();
     }
     /**
@@ -21,9 +20,9 @@ public class JdkDemoObjects {
      * @time: 2022/12/26
      */
     private void ti1(){
-        JdkDemoObjects demo1 = new JdkDemoObjects();
-        JdkDemoObjects demo2 = new JdkDemoObjects();
-        JdkDemoObjects demo3 = null;
+        JdkObjects demo1 = new JdkObjects();
+        JdkObjects demo2 = new JdkObjects();
+        JdkObjects demo3 = null;
         //常规方法，下面会报错
         System.out.println("常规equals方法：res="+demo3.equals(demo1));
         //下面不会报错
