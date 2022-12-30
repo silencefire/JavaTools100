@@ -61,7 +61,7 @@ public class JdkMath {
     }
 
     /**
-     * @description:  我觉得有意思的方法
+     * @description:  我觉得有意思的方法，其他的方法看了一遍，都是数学性质太强，暂时用不到
      */
     private void ti3(){
         System.out.println("copySign："+Math.copySign(-1.2,0.12));//返回第一个参数的值，带有第二个参数的符号（正负值）
@@ -72,8 +72,5 @@ public class JdkMath {
         System.out.println("multiplyExact："+Math.multiplyExact(7,3));//计算两个数的乘积，超过最大值报错，也没啥用
         System.out.println("negateExact："+Math.negateExact(-7));//返回一个数的相反数
         System.out.println("nextAfter："+Math.nextAfter(1,-1));//第二个参数方向上第一个参数旁边的浮点数
-
-
-
     }
 }
