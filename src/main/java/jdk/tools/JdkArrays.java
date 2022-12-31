@@ -4,6 +4,7 @@ import jdk.tools.entity.Apple;
 
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -25,6 +26,9 @@ public class JdkArrays {
      * parallelSort() ——按照数字升序排列指定数组
      * stream() ——将自定数组作为源（流）--创建流对象
      * toString()
+     */
+    /**
+     * @description:  binarySearch
      */
     private void ti1(){
         /*
@@ -70,12 +74,9 @@ public class JdkArrays {
         System.out.println(Arrays.binarySearch(as,2));
 
         /*
-         * "重磅推荐！！！！"
          *  binarySearch(T[] a, T key, Comparator<? super T> c)
-         * 原因：可以带自己的比较器，也就是可以比较对象了；牛逼！！！
-         *
+         * 原因：可以带自己的比较器，也就是可以比较对象了；优势是对所有的对象排序后，根据排序规则找到应该插入的位置；还是算法常用吧；
          * 用法，先用sort(a[],comparator)将数据排序，然后调用该方法，切记，也要先排好序；
-         * 这个没完玩，明天想办法再优化下；
          */
 
         Apple a = new Apple("local","red","good",10);
@@ -83,8 +84,11 @@ public class JdkArrays {
         Apple c = new Apple("local","red","good",1);
         Apple d = new Apple("local","red","good",14);
         Apple e = new Apple("local","red","good",100);
-        Apple[] apples = new Apple[]{a,b,c,d,e};
-
+        Apple[] apples = new Apple[1000000];
+        for(int i=0;i<1000000;i++){
+            Apple x = new Apple("local"+i,"red","good", (int) Math.round(Math.random()*1000));
+            apples[i] = x;
+        }
         Comparator<Apple> comparator = new Comparator<Apple>() {
             @Override
             public int compare(Apple o1, Apple o2) {
@@ -93,8 +97,21 @@ public class JdkArrays {
                 return o1.getPrice()-o2.getPrice();
             }
         };
+        /*
+         * 用了10万数据测试，发现还是链表更快，因为不需要排序；差距随着数量的增加，随之拉大；
+         * 查找元素推荐：链表的contains
+         * 但是这个方法也是有优点的，排序，查到插入的位置；
+         */
+        long t1 = System.currentTimeMillis();
+        //sort的算法后面介绍，情况略复杂；
         Arrays.sort(apples,comparator);
         int appPosition = Arrays.binarySearch(apples, b, comparator);
         System.out.println("appPosition:"+appPosition);
+        System.out.println("appPosition time:"+(System.currentTimeMillis()-t1));
+
+        long t2 = System.currentTimeMillis();
+        List<Apple> ala = Arrays.asList(apples);
+        System.out.println("Arrays.contains:"+ala.contains(a));
+        System.out.println("appPosition time:"+(System.currentTimeMillis()-t2));
     }
 }
