@@ -14,7 +14,7 @@ import java.util.Objects;
 public class JdkArrays {
     public static void main(String[] args) {
         JdkArrays jdkArrays = new JdkArrays();
-        jdkArrays.ti1();
+        jdkArrays.ti3();
     }
 
     /**
@@ -100,7 +100,7 @@ public class JdkArrays {
         /*
          * 用了10万数据测试，发现还是链表更快，因为不需要排序；差距随着数量的增加，随之拉大；
          * 查找元素推荐：链表的contains
-         * 但是这个方法也是有优点的，排序，查到插入的位置；
+         * 但是这个方法也是有优点的，排序，返回应该插入的位置；
          */
         long t1 = System.currentTimeMillis();
         //sort的算法后面介绍，情况略复杂；
@@ -114,4 +114,90 @@ public class JdkArrays {
         System.out.println("Arrays.contains:"+ala.contains(a));
         System.out.println("appPosition time:"+(System.currentTimeMillis()-t2));
     }
+    
+    /**
+     * @description:  copyOf()方法/copyOfRange()方法
+     * 作用：复制数组；
+     * 使用注意点：
+     * 1.内部使用的是 System.arraycopy 也就是最后复制出来的数组与原数组已经没有任何关系，内存地址指向的位置并不同；
+     * 2.第二个参数如果大于原数组位数，会被用0填充；
+     * @author: zhenghm
+     * @time: 2023/1/1
+     */
+    private void ti2(){
+        int[] a = {1,2,3,4};
+        int[] arraysCopy = Arrays.copyOf(a,2);
+        arraysCopy[0] = 9;
+        System.out.println("copyOf:a:"+Arrays.toString(a));
+        System.out.println("copyOf:b:"+Arrays.toString(arraysCopy));
+
+        /*
+         * 其他变种方法的使用
+         * 1.三参数，指定返回数组类型
+         * 2.copyOfRange，复制指定部分；
+         */
+        Integer[] aI = new Integer[]{1,2,3,4};
+        //指定返回的数组的类型，但是必须是之前数组元素的父类或同类；
+        System.out.println("copyOf:3param:"+Arrays.toString(Arrays.copyOf(aI,2,Integer[].class)));
+        System.out.println("copyOf:3param:"+Arrays.toString(Arrays.copyOf(aI,2,Object[].class)));
+
+        //只复制指定的部分
+        System.out.println("copyOfRange:"+Arrays.toString(Arrays.copyOfRange(aI,1,3)));
+        //复制指定的部分，并指定返回类型
+        System.out.println("copyOfRange:4param:"+Arrays.toString(Arrays.copyOfRange(aI,1,3,Object[].class)));
+    }
+
+    /**
+     * @description: equals方法
+     * @author: zhenghm
+     * @time: 2023/1/1
+     *
+     *  结论：普通的常用对象使用Arrays.equals够用
+     * 其他的多维基础类型数组（数组里套数组），要深入比较，则可以用Arrays.deepEquals；也就是Objects基本不用；
+     *
+     * 两个常用的变种方法：
+     * 1.指定比较范围的方法；
+     * 2.对象数组，指定比较器的方法；
+     */
+    private void ti3(){
+        /*
+         * 该方法在Objects已经研究过，直接说结论：Arrays.deepEquals与Objects.deepEquals对于数组用的是同一个方法；
+         * 比较的都是内部数据是否一致，而不是内部地址
+         * 而Objects.equals则是比较的内存地址；
+         */
+        int[] a = {1,2,3,4};
+        int[] b = {1,2,3,4};
+        Apple[] apples1 = new Apple[2];
+        apples1[0] = new Apple("local","red","good",10);
+        apples1[1] = new Apple("local","red","good",11);
+        Apple[] apples2 = new Apple[2];
+        apples2[0] = new Apple("local","red","good",10);
+        apples2[1] = new Apple("local","red","good",11);
+        Apple[] apples3 = new Apple[2];
+        apples3[0] = new Apple("local","red","good",11);
+        apples3[1] = new Apple("local","red","good",11);
+        System.out.println("Arrays.equals:"+Arrays.equals(a,b));
+        System.out.println("Objects.deepEquals:"+Objects.deepEquals(a,b));
+        //这里都会提示使用 Arrays.equals方法
+        System.out.println("Objects.equals:"+Objects.equals(a,b));
+        //Arrays.equals与deepEquals对于普通对象是没什么区别的，但是对于基础类型的的多维数组对象则不同；deepEquals更深入比较
+        System.out.println("Arrays.deepEquals:"+Arrays.deepEquals(apples1,apples2));
+        System.out.println("Arrays.equals:"+Arrays.equals(apples1,apples2));
+
+        //其他变种方法，更加常用，指定对比范围
+        System.out.println("Arrays.equals:6params:"+Arrays.equals(a,1,2,b,1,2));
+        System.out.println("Arrays.equals:6params:"+Arrays.equals(a,1,3,b,1,4));
+
+        //对象数组比较，如果没有写对象的equals或者想用另一套比较规则，使用带比较器的方法
+        Comparator<Apple> comparator = new Comparator<Apple>() {
+            @Override
+            public int compare(Apple o1, Apple o2) {
+                return o1.getPrice()-o2.getPrice();
+            }
+        };
+        System.out.println("Arrays.equals:withComparator:"+Arrays.equals(apples1,apples2,comparator));
+        System.out.println("Arrays.equals:withComparator:"+Arrays.equals(apples1,apples3,comparator));
+    }
+
+
 }

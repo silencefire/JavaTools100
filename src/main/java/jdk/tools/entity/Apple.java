@@ -1,5 +1,7 @@
 package jdk.tools.entity;
 
+import java.util.Objects;
+
 public class Apple {
     private String type;
     private String color;
@@ -53,5 +55,18 @@ public class Apple {
                 ", desc='" + desc + '\'' +
                 ", price=" + price +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Apple apple = (Apple) o;
+        return price == apple.price && type.equals(apple.type) && color.equals(apple.color) && desc.equals(apple.desc);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(type, color, desc, price);
     }
 }
