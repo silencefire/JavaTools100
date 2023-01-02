@@ -14,7 +14,7 @@ import java.util.Objects;
 public class JdkArrays {
     public static void main(String[] args) {
         JdkArrays jdkArrays = new JdkArrays();
-        jdkArrays.ti3();
+        jdkArrays.ti4();
     }
 
     /**
@@ -199,5 +199,33 @@ public class JdkArrays {
         System.out.println("Arrays.equals:withComparator:"+Arrays.equals(apples1,apples3,comparator));
     }
 
+    /**
+     * @description: toString，deepToString
+     * 结论：
+     *  toString打印一维数组
+     *  多维数组，则用deepToString打印
+     *  打印对象数组，需要写对象的toString方法；
+     * @author: zhenghm
+     * @time: 2023/1/2
+     */
+    private void ti4(){
+        //整型
+        int[] a = {1,2,3,4,5};
+        System.out.println("int[]:"+Arrays.toString(a));
+        //字符
+        char[] b = {'a','b','c','d','e'};
+        System.out.println("char[]:"+Arrays.toString(b));
+        //对象
+        Apple[] apples1 = new Apple[2];
+        apples1[0] = new Apple("local","red","good",10);
+        apples1[1] = new Apple("local","red","good",11);
+        System.out.println("apples[]:"+Arrays.toString(apples1));
+
+        int[] c = {1,2,3,4,5};
+        int[] d = {1,2,3,4,5};
+        int[][] s = {a,c,d};
+        System.out.println("int[]:"+Arrays.toString(s));
+        System.out.println("int[][]:"+Arrays.deepToString(s));
+    }
 
 }
