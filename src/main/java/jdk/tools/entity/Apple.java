@@ -2,7 +2,7 @@ package jdk.tools.entity;
 
 import java.util.Objects;
 
-public class Apple {
+public class Apple implements Comparable<Apple>{
     private String type;
     private String color;
     private String desc;
@@ -68,5 +68,10 @@ public class Apple {
     @Override
     public int hashCode() {
         return Objects.hash(type, color, desc, price);
+    }
+
+    @Override
+    public int compareTo(Apple o) {
+        return this.price-o.getPrice();
     }
 }

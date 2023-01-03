@@ -14,7 +14,7 @@ import java.util.Objects;
 public class JdkArrays {
     public static void main(String[] args) {
         JdkArrays jdkArrays = new JdkArrays();
-        jdkArrays.ti4();
+        jdkArrays.ti5();
     }
 
     /**
@@ -25,7 +25,7 @@ public class JdkArrays {
      * sort() ——按照数字升序排列指定数组
      * parallelSort() ——按照数字升序排列指定数组
      * stream() ——将自定数组作为源（流）--创建流对象
-     * toString()
+     * toString() ——打印数组内的数据
      */
     /**
      * @description:  binarySearch
@@ -228,4 +228,58 @@ public class JdkArrays {
         System.out.println("int[][]:"+Arrays.deepToString(s));
     }
 
+    /**
+     * @description: sort方法，parallelSort方法
+     * @author: zhenghm
+     * @time: 2023/1/3
+     */
+    private void ti5(){
+        int[] a = new int[]{1,7,3,2,5,0};
+        Arrays.sort(a);
+        System.out.println("sort:1param:"+Arrays.toString(a));
+
+        //其他变种
+        //Arrays.sort(数组名，起始下标，排序个数)
+        int[] b = new int[]{1,7,3,2,5,0};
+        //只排序前三个；
+        Arrays.sort(b,0,3);
+        System.out.println("sort:3param:"+Arrays.toString(b));
+
+        //对对象排序，如果对象写了比较器继承了Comparator，则可以进行比较
+        Apple[] apples1 = new Apple[3];
+        apples1[0] = new Apple("local","red","good",10);
+        apples1[1] = new Apple("local","red","good",19);
+        apples1[2] = new Apple("local","red","good",15);
+        Arrays.sort(apples1);
+        System.out.println(Arrays.toString(apples1));
+
+        //对象排序，比较时放入比较器，这次进行逆序排序
+        //sort(Object[] a)
+        //sort(T[] a, Comparator<? super T> c)
+        Apple[] apples2 = new Apple[3];
+        apples2[0] = new Apple("local","red","good",10);
+        apples2[1] = new Apple("local","red","good",19);
+        apples2[2] = new Apple("local","red","good",15);
+        Arrays.sort(apples2, new Comparator<Apple>() {
+            @Override
+            public int compare(Apple o1, Apple o2) {
+                return o2.getPrice()-o1.getPrice();
+            }
+        });
+        System.out.println(Arrays.toString(apples2));
+
+        //上面的对象排序，还可以加入下标，用来标识排序哪些数据；
+        //sort(Object[] a, int fromIndex, int toIndex)
+        //sort(T[] a, int fromIndex, int toIndex, Comparator<? super T> c)
+
+        /**
+         * @description:  parallelSort() 在功能上有所不同。
+         * 与 sort() 使用单个线程对数据进行顺序排序不同，它使用并行排序-合并排序算法。
+         * 它将数组分成子数组，这些子数组本身先进行排序然后合并
+         *
+         * 只有在满足某些条件时，它才会使用并行性。如果数组大小小于或等于 8192，
+         * 或者处理器只有一个核心，则它将使用顺序的 Dual-Pivot Quicksort 算法。否则，它使用并行排序
+         */
+
+    }
 }
