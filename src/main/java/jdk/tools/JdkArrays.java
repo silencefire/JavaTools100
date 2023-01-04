@@ -12,21 +12,22 @@ import java.util.Objects;
  * @author coldE
  */
 public class JdkArrays {
-    public static void main(String[] args) {
-        JdkArrays jdkArrays = new JdkArrays();
-        jdkArrays.ti5();
-    }
-
     /**
      * 老规矩，先看看常用方法，再全部从上到下玩一遍，找找有意思的；
      * binarySearch() ——二分搜索法搜索指定元素的下标，需要先排序
      * copyOf() ——复制指定数组长度的元素到新数组
      * equals() ——判断两个数组彼此是否相等
      * sort() ——按照数字升序排列指定数组
-     * parallelSort() ——按照数字升序排列指定数组
+     * parallelSort() ——按照数字升序排列指定数组（并行算法）
      * stream() ——将自定数组作为源（流）--创建流对象
      * toString() ——打印数组内的数据
      */
+    public static void main(String[] args) {
+        JdkArrays jdkArrays = new JdkArrays();
+        jdkArrays.ti7();
+    }
+
+
     /**
      * @description:  binarySearch
      */
@@ -278,8 +279,84 @@ public class JdkArrays {
          * 它将数组分成子数组，这些子数组本身先进行排序然后合并
          *
          * 只有在满足某些条件时，它才会使用并行性。如果数组大小小于或等于 8192，
+         * （这里我实验有些不同，上10万的数据才会用parallel更快，之后数据量越大，区别越明显）
          * 或者处理器只有一个核心，则它将使用顺序的 Dual-Pivot Quicksort 算法。否则，它使用并行排序
+         *
+         * parallel的变种与sor一样，都是带下标的和带比较器的；就不赘述了
+         */
+        Apple[] applesMax = new Apple[1000000];
+        for(int i=0;i<applesMax.length;i++){
+            applesMax[i] = new Apple("local"+i,"red","good", (int) Math.round(Math.random()*1000));
+        }
+        long t1 = System.currentTimeMillis();
+        Arrays.parallelSort(applesMax);
+        System.out.println("applesMax:parallelSort,TIME:"+(System.currentTimeMillis()-t1));
+
+        Apple[] applesMax2 = new Apple[10000001];
+        for(int i=0;i<applesMax2.length;i++){
+            applesMax2[i] = new Apple("local"+i,"red","good", (int) Math.round(Math.random()*1000));
+        }
+        long t2 = System.currentTimeMillis();
+        Arrays.sort(applesMax2);
+        System.out.println("applesMax:sort,TIME:"+(System.currentTimeMillis()-t2));
+    }
+
+    /**
+     * @description: stream方法
+     * 主要作用：获取数组的流，同样的方法还有Stream.of
+     *
+     * 变种方法：
+     * 1.stream(T[] array, int startInclusive, int endExclusive)
+     * 作用，将一定索引的元素转换为流；
+     * 转化之后流的操作就丰富了，几乎很多都能用，也是JDK8比较好玩的特性，这里不多说，研究stream的玩法的时候再说；
+     * @author: zhenghm
+     * @time: 2023/1/4
+     */
+    private void ti6(){
+        int[] a = {1,5,3,6,2,4};
+        System.out.println(Arrays.stream(a).toString());
+        Arrays.stream(a).forEach(System.out::print);
+        System.out.println();
+
+        //将下标1到3（不包括3）的元素转换为流，并进行打印
+        Arrays.stream(a,1,3).forEach(System.out::print);
+    }
+
+    /**
+     * @description: 接下来就是自由时间：来看看都有啥好玩的方法
+     * @author: zhenghm
+     * @time: 2023/1/4
+     */
+    private void ti7(){
+        /*
+         * compare方法：首先比较内存地址，然后看是否各元素都匹配，都匹配返回-1，否则会比较不匹配位置的大小，返回1或-1；
+         * 这里的匹配：元素是否一致；可能的情况是相等或者一个包含另一个数组的内容；
+         * 如果都匹配（元素相等或者包含），则比较两个数组的长度规则是a-b；
+         * 分析：一般比较数组相等，用equals就可以，比较谁长？这个方法不具有考察性，如下例子，结果相同，无法判断何种情况；
+         * 结论：只能用正负，来表示是否按照[字典顺序]谁在前面；>0表示第一个元素更大，<0表示第一个元素更小；
+         *
+         * ：：其他变种，
+         * 1.指定了下标，指定比较元素的位置起点和终点，不赘述；
+         * 2.就是compareUnsigned方法，进行无符号比较，将里面的元素进行无符号处理（都是正值）
+         * 3.对于对象元素，也可以比较，但是需要实现Comparable接口，或者给定一个comparator接口；
+         *
          */
 
+        int[] a = {1,2,3,4,5,6};
+        int[] b = {1,2,3,4,5};
+        int[] c = {1,2,6,7,8};
+        System.out.println("匹配但是长度不等："+Arrays.compare(b,a));
+        System.out.println("不匹配，比较元素："+Arrays.compare(b,c));
+
+        Apple[] apples1 = new Apple[3];
+        apples1[0] = new Apple("local","red","good",10);
+        apples1[1] = new Apple("local","red","good",19);
+        apples1[2] = new Apple("local","red","good",15);
+        Apple[] apples2 = new Apple[3];
+        apples2[0] = new Apple("local","red","good",10);
+        apples2[1] = new Apple("local","red","good",19);
+        apples2[2] = new Apple("local","red","good",17);
+        //结论就是第一个苹果比第二个苹果小，这样为啥不用sort...
+        System.out.println("比较对象结果："+Arrays.compare(apples1,apples2));
     }
 }
