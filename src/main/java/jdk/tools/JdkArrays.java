@@ -359,4 +359,13 @@ public class JdkArrays {
         //结论就是第一个苹果比第二个苹果小，这样为啥不用sort...
         System.out.println("比较对象结果："+Arrays.compare(apples1,apples2));
     }
+    
+    /**
+     * @description: 明天加上，今天游戏，算上昨天的，明天一天白天不休息；
+     * @author: zhenghm
+     * @time: 2023/1/6
+     */
+    private void ti8(){
+        
+    }
 }
