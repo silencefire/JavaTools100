@@ -24,7 +24,7 @@ public class JdkArrays {
      */
     public static void main(String[] args) {
         JdkArrays jdkArrays = new JdkArrays();
-        jdkArrays.ti7();
+        jdkArrays.ti8();
     }
 
 
@@ -78,6 +78,9 @@ public class JdkArrays {
          *  binarySearch(T[] a, T key, Comparator<? super T> c)
          * 原因：可以带自己的比较器，也就是可以比较对象了；优势是对所有的对象排序后，根据排序规则找到应该插入的位置；还是算法常用吧；
          * 用法，先用sort(a[],comparator)将数据排序，然后调用该方法，切记，也要先排好序；
+         */
+        /*
+         *  Arrays.asList方法
          */
 
         Apple a = new Apple("local","red","good",10);
@@ -361,11 +364,22 @@ public class JdkArrays {
     }
     
     /**
-     * @description: 明天加上，今天游戏，算上昨天的，明天一天白天不休息；
+     * @description: copyOf方法
+     * 明天加上，今天游戏，算上昨天的，明天一天白天不休息；已补上3h
      * @author: zhenghm
      * @time: 2023/1/6
      */
     private void ti8(){
-        
+        boolean[] bs = new boolean[]{true,true,false,false,true};
+        boolean[] bc = Arrays.copyOf(bs,2);
+        System.out.println(Arrays.toString(bs));
+        System.out.println(Arrays.toString(bc));
+
+        //变形：指定返回的数组类型；
+        Character[] chars = new Character[]{'a','b','c','d','e','f'};
+        Object[] longs = Arrays.copyOf(chars,2,Object[].class);
+        System.out.println(Arrays.toString(longs));
+
+
     }
 }
