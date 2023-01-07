@@ -24,7 +24,7 @@ public class JdkArrays {
      */
     public static void main(String[] args) {
         JdkArrays jdkArrays = new JdkArrays();
-        jdkArrays.ti8();
+        jdkArrays.ti10();
     }
 
 
@@ -364,7 +364,7 @@ public class JdkArrays {
     }
     
     /**
-     * @description: copyOf方法
+     * @description: copyOf方法，copyOfRange方法
      * 明天加上，今天游戏，算上昨天的，明天一天白天不休息；已补上3h
      * @author: zhenghm
      * @time: 2023/1/6
@@ -380,6 +380,61 @@ public class JdkArrays {
         Object[] longs = Arrays.copyOf(chars,2,Object[].class);
         System.out.println(Arrays.toString(longs));
 
+        //copyOfRange
+        byte[] b1  = new byte[]{1,0,1,127,-128,1};
+        byte[] b2 = Arrays.copyOfRange(b1,2,4);
+        System.out.println(Arrays.toString(b1));
+        System.out.println(Arrays.toString(b2));
+        //顺便验证了下字节的取值范围；
+        System.out.println(Math.pow(2,7));
+        //变种：设定返回类型
+        Byte[] b3 = new Byte[]{1,0,1,127,-128,1};
+        Object[] res = Arrays.copyOfRange(b3,3,6,Object[].class);
+        System.out.println(Arrays.toString(res));
+    }
 
+    /**
+     * @description: fill
+     * 这个方法很有意思，可以用来批量为数组装元素，但是用的是对于同一个对象的引用，慎用！
+     * 改了fill对象的数据，则数组的所有数据哦都会变化；
+     * @author: zhenghm
+     * @time: 2023/1/7
+     */
+    private void ti9(){
+        double[] ds = new double[100];
+        Arrays.fill(ds,10.22222);
+        System.out.println("ds:"+Arrays.toString(ds));
+
+        double[] ds2 = new double[100];
+        Arrays.fill(ds2,2,7,11.222);
+        System.out.println("ds2:"+Arrays.toString(ds2));
+
+        Apple[] apps = new Apple[20];
+        Apple s = new Apple("local","red","good", (int) Math.round(10*Math.random()));
+        Arrays.fill(apps,s);
+        System.out.println("apps:"+Arrays.toString(apps));
+        s.setPrice(20);
+        System.out.println("apps:set20:"+Arrays.toString(apps));
+    }
+
+    /**
+     * @description: mismatch
+     * 与equals同样调用了ArraysSupport.mismatch这个工具方法；
+     * 目的：找并返回两个数组之间第一个不匹配的索引，否则如果未找到不匹配则返回-1
+     * 源码分析：
+     *  1.比较内存，如果一致：返回-1
+     *  2.用ArraysSupport.mismatch
+     *
+     * ArraysSupport.mismatch:(注意：ArraysSupport这种辅助类，jdk还有很多，都很关键)
+     *  mismatch方法可以返回两个被判定的数组对象中，首个不相等元素的下标；
+     *  与Arrays调用的区别：Arrays会自动确认ArraysSupport.mismatch的length参数；以及对应的处理；
+     *
+     * @author: zhenghm
+     * @time: 2023/1/7
+     */
+    private void ti10(){
+        int[] ins = new int[]{1,2,3,4,5,6};
+        int[] ins2 = new int[]{1,2,3};
+        System.out.println(Arrays.mismatch(ins,ins2));
     }
 }
