@@ -437,4 +437,16 @@ public class JdkArrays {
         int[] ins2 = new int[]{1,2,3};
         System.out.println(Arrays.mismatch(ins,ins2));
     }
+
+    /**
+     * @description: parallelPrefix 方法对数组的元素累计执行给定的数学函数，它们同时修改数组
+     * @author: zhenghm
+     * @time: 2023/1/9
+     */
+    private void ti11(){
+        
+    }
+
+
+
 }
