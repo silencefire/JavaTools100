@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.BinaryOperator;
+import java.util.function.IntBinaryOperator;
 
 /**
  * 主要研究Arrays
@@ -24,7 +26,7 @@ public class JdkArrays {
      */
     public static void main(String[] args) {
         JdkArrays jdkArrays = new JdkArrays();
-        jdkArrays.ti10();
+        jdkArrays.ti11();
     }
 
 
@@ -440,11 +442,38 @@ public class JdkArrays {
 
     /**
      * @description: parallelPrefix 方法对数组的元素累计执行给定的数学函数，它们同时修改数组
+     * 这个的效果让我想起了stream流里面有个reduce，叫做归约的方法，也会做类似的做法，不过只会获取最后一位；
+     * 用对象进行测试，发现也会进行计算，不过传入的是比较器，返回的是两个比较对象中的一个，比较数组中的两个对象，每次都留下返回的对象；如下；
      * @author: zhenghm
      * @time: 2023/1/9
      */
     private void ti11(){
-        
+        int[] s = {1,2,3,4,5,6};
+        int[] s2 = {1,2,3,4,5,6};
+        int[] s3 = {1,2,3,4,5,6};
+        IntBinaryOperator ibo = (x,y) ->(x+y);
+        IntBinaryOperator ibo2 = (x,y) ->(x-y);
+        Arrays.parallelPrefix(s,ibo);
+        System.out.println(Arrays.toString(s));
+        Arrays.parallelPrefix(s2,ibo2);
+        System.out.println(Arrays.toString(s2));
+        Arrays.stream(s3).reduce(ibo).stream().forEach(System.out::print);
+
+        Apple[] apples = new Apple[5];
+        apples[0] = new Apple("local","red","good",101);
+        apples[1] = new Apple("local","red","good",12);
+        apples[2] = new Apple("local","red","good",1);
+        apples[3] = new Apple("local","red","good",14);
+        apples[4] = new Apple("local","red","good",100);
+        BinaryOperator<Apple> bo = new BinaryOperator<Apple>() {
+            @Override
+            public Apple apply(Apple apple, Apple apple2) {
+                return apple.getPrice()>apple2.getPrice()?apple:apple2;
+            }
+        };
+        Arrays.parallelPrefix(apples,bo);
+        System.out.println(Arrays.toString(apples));
+
     }
 
 
